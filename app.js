@@ -135,7 +135,7 @@ function oppnaKund(k) {
   $('rader').innerHTML = '';
   const rader = k && k.rader && k.rader.length ? k.rader : [{}];
   rader.forEach(r => laggTillRad(r));
-  if (!k) laggTillRad({});
+  if (k && k.rader && k.rader.length) laggTillRad({}); // tom rad sist för att lägga till
   raknaSumma();
   history.pushState({ vy: 'kund' }, '');
   visa('vy-kund');
@@ -161,6 +161,7 @@ function laggTillRad(r = {}) {
     if (!div.querySelector('.r-antal').value) div.querySelector('.r-antal').value = 1;
   });
   div.addEventListener('input', raknaSumma);
+  for (const inp of div.querySelectorAll('input')) inp.addEventListener('focus', () => setTimeout(() => inp.select(), 0)); // markera innehållet så man skriver över
   $('rader').appendChild(div);
 }
 
@@ -236,4 +237,5 @@ function init() {
 
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 }
+window.addEventListener('hashchange', () => { if (/nyckel=/.test(location.hash)) location.reload(); });
 init();
