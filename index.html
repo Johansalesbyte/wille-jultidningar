@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Willes jultidningar</title>
+  <meta name="theme-color" content="#b3261e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Jultidningar">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" href="icon-192.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Saknar nyckel -->
+<section id="vy-nyckel" class="vy" hidden>
+  <div class="kort center">
+    <h1>Willes jultidningar</h1>
+    <p>Öppna appen via länken du fått. Den innehåller din hemliga nyckel.</p>
+  </div>
+</section>
+
+<!-- Startsida -->
+<section id="vy-start" class="vy" hidden>
+  <header class="topp">
+    <h1>Willes jultidningar</h1>
+    <button id="knapp-uppdatera" class="ikon" aria-label="Uppdatera" title="Uppdatera">↻</button>
+  </header>
+
+  <div class="kort hero">
+    <div class="etikett">Sålt för</div>
+    <div id="total" class="stort">0 kr</div>
+    <div class="nivarad">
+      <div>
+        <div class="etikett">Nivå</div>
+        <div id="niva" class="niva">–</div>
+      </div>
+      <div class="hoger">
+        <div class="etikett" id="nasta-etikett">Kvar till nivå 1</div>
+        <div id="kvar" class="kvar">0 kr</div>
+      </div>
+    </div>
+    <div class="stapel"><div id="stapel-fyll" class="fyll"></div></div>
+    <div id="nivalista" class="nivalista"></div>
+  </div>
+
+  <button id="knapp-ny" class="primar stor">+ Ny kund</button>
+
+  <div class="listtopp">
+    <h2 id="kundrubrik">Kunder</h2>
+    <label class="filter"><input type="checkbox" id="filter-ej-levererade"> Bara ej levererade</label>
+  </div>
+  <ul id="kundlista" class="kundlista"></ul>
+  <p id="offline-info" class="dampad center" hidden>Visar senast hämtade uppgifter.</p>
+</section>
+
+<!-- Kundskärm -->
+<section id="vy-kund" class="vy" hidden>
+  <header class="topp">
+    <button id="knapp-tillbaka" class="ikon" aria-label="Tillbaka">‹</button>
+    <h1 id="kundtitel">Ny kund</h1>
+    <span class="ikon"></span>
+  </header>
+
+  <form id="kundform" autocomplete="off">
+    <div class="kort">
+      <label>Namn
+        <input id="f-namn" type="text" required placeholder="För- och efternamn" autocapitalize="words" enterkeyhint="next">
+      </label>
+      <label>Mobilnummer
+        <input id="f-mobil" type="tel" placeholder="070-123 45 67" enterkeyhint="next">
+      </label>
+      <label>Adress
+        <input id="f-adress" type="text" placeholder="Gata 12" autocapitalize="sentences" enterkeyhint="next">
+      </label>
+      <label class="rad-check"><input type="checkbox" id="f-levererad"> Levererad</label>
+    </div>
+
+    <div class="kort">
+      <div class="radhuvud"><span>Nr</span><span>Antal</span><span>Pris</span><span></span></div>
+      <div id="rader"></div>
+      <button type="button" id="knapp-rad" class="sekundar">+ Rad</button>
+      <div class="summarad"><span>Summa</span><span id="f-summa">0 kr</span></div>
+    </div>
+
+    <button type="submit" id="knapp-spara" class="primar stor">Spara</button>
+    <button type="button" id="knapp-ta-bort" class="farlig" hidden>Ta bort kund</button>
+  </form>
+</section>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="app.js"></script>
+</body>
+</html>
