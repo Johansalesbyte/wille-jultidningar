@@ -1,4 +1,4 @@
-const CACHE = 'jultidningar-v1';
+const CACHE = 'jultidningar-v2';
 const FILER = ['./', './index.html', './app.js', './style.css', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
@@ -11,7 +11,7 @@ self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
   if (url.origin !== location.origin || e.request.method !== 'GET') return; // Supabase går alltid mot nätet
   e.respondWith(
-    fetch(e.request).then(svar => {
+    fetch(e.request, { cache: "no-cache" }).then(svar => {
       const kopia = svar.clone();
       caches.open(CACHE).then(c => c.put(e.request, kopia));
       return svar;

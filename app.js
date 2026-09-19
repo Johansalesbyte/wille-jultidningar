@@ -8,7 +8,13 @@ const $ = id => document.getElementById(id);
 const kr = n => Math.round(Number(n) || 0).toLocaleString('sv-SE') + ' kr';
 
 let nyckel = null;
-let data = { nivaer: [], kunder: [] };
+let data = { nivaer: [], artiklar: [], kunder: [] };
+let sortering = 'senaste';
+
+function artikel(nr) {
+  const n = parseInt(String(nr).trim(), 10);
+  return (data.artiklar || []).find(a => a.nr === n) || null;
+}
 let aktuellKund = null; // null = ny kund
 
 // ---------- Nyckel ----------
@@ -89,6 +95,8 @@ function ritaStart() {
 function ritaKundlista() {
   const bara = $('filter-ej-levererade').checked;
   const kunder = data.kunder.filter(k => !bara || !k.levererad);
+  if (sortering === 'storst') kunder.sort((a, b) => Number(b.summa_kr) - Number(a.summa_kr));
+  else kunder.sort((a, b) => new Date(b.skapad) - new Date(a.skapad));
   $('kundrubrik').textContent = `Kunder (${kunder.length})`;
   const ul = $('kundlista');
   ul.innerHTML = '';
@@ -149,17 +157,29 @@ function laggTillRad(r = {}) {
     <input type="text" inputmode="numeric" class="r-nr" placeholder="Nr" enterkeyhint="next">
     <input type="number" inputmode="numeric" class="r-antal" min="1" step="1" placeholder="1" enterkeyhint="next">
     <input type="number" inputmode="decimal" class="r-pris" min="0" step="1" placeholder="kr" enterkeyhint="done">
-    <button type="button" class="bort" aria-label="Ta bort rad">×</button>`;
+    <button type="button" class="bort" aria-label="Ta bort rad">×</button>
+    <div class="artnamn"></div>`;
   div.querySelector('.r-nr').value = r.artikelnr || '';
   div.querySelector('.r-antal').value = r.antal || (r.artikelnr ? 1 : '');
   div.querySelector('.r-pris').value = r.pris_kr != null && r.artikelnr ? Number(r.pris_kr) : '';
   div.querySelector('.bort').addEventListener('click', () => { div.remove(); if (!$('rader').children.length) laggTillRad({}); raknaSumma(); });
+  const visaNamn = () => {
+    const nr = div.querySelector('.r-nr').value.trim();
+    const a = artikel(nr);
+    const el = div.querySelector('.artnamn');
+    el.textContent = !nr ? '' : a ? a.namn : 'Okänt nummer, skriv priset själv';
+    el.className = 'artnamn' + (nr && !a ? ' okand' : '');
+  };
   div.querySelector('.r-nr').addEventListener('input', () => {
     // Nytt tomt radfält när sista raden fylls i
     const alla = [...$('rader').querySelectorAll('.rad')];
     if (alla[alla.length - 1] === div && div.querySelector('.r-nr').value.trim()) laggTillRad({});
     if (!div.querySelector('.r-antal').value) div.querySelector('.r-antal').value = 1;
+    const a = artikel(div.querySelector('.r-nr').value);
+    if (a) div.querySelector('.r-pris').value = a.pris_kr; // pris från katalogen, går att ändra
+    visaNamn();
   });
+  visaNamn();
   div.addEventListener('input', raknaSumma);
   for (const inp of div.querySelectorAll('input')) inp.addEventListener('focus', () => setTimeout(() => inp.select(), 0)); // markera innehållet så man skriver över
   $('rader').appendChild(div);
@@ -232,6 +252,11 @@ function init() {
   $('knapp-rad').addEventListener('click', () => { laggTillRad({}); $('rader').lastElementChild.querySelector('.r-nr').focus(); });
   $('knapp-ta-bort').addEventListener('click', taBortKund);
   $('filter-ej-levererade').addEventListener('change', ritaKundlista);
+  for (const b of document.querySelectorAll('.sortknapp')) b.addEventListener('click', () => {
+    sortering = b.dataset.sort;
+    for (const x of document.querySelectorAll('.sortknapp')) x.classList.toggle('aktiv', x === b);
+    ritaKundlista();
+  });
   window.addEventListener('popstate', () => visa((history.state && history.state.vy) === 'kund' ? 'vy-kund' : 'vy-start'));
   document.addEventListener('visibilitychange', () => { if (!document.hidden && !$('vy-start').hidden) hamta(); });
 

@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="icon" href="icon-192.png">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
 
@@ -51,9 +51,13 @@
 
   <div class="listtopp">
     <h2 id="kundrubrik">Kunder</h2>
-    <label class="filter"><input type="checkbox" id="filter-ej-levererade"> Bara ej levererade</label>
+    <div class="sortering" role="group" aria-label="Sortera">
+      <button type="button" class="sortknapp aktiv" data-sort="senaste">Senaste</button>
+      <button type="button" class="sortknapp" data-sort="storst">Störst</button>
+    </div>
   </div>
   <ul id="kundlista" class="kundlista"></ul>
+  <label class="filter botten"><input type="checkbox" id="filter-ej-levererade"> Visa bara ej levererade</label>
   <p id="offline-info" class="dampad center" hidden>Visar senast hämtade uppgifter.</p>
 </section>
 
@@ -81,6 +85,7 @@
 
     <div class="kort">
       <div class="radhuvud"><span>Nr</span><span>Antal</span><span>Pris</span><span></span></div>
+      <p class="dampad liten">Skriv numret ur katalogen så fylls namn och pris i automatiskt.</p>
       <div id="rader"></div>
       <button type="button" id="knapp-rad" class="sekundar">+ Rad</button>
       <div class="summarad"><span>Summa</span><span id="f-summa">0 kr</span></div>
@@ -93,6 +98,6 @@
 
 <div id="toast" class="toast" hidden></div>
 
-<script src="app.js"></script>
+<script src="app.js?v=2"></script>
 </body>
 </html>
