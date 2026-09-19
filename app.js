@@ -149,7 +149,9 @@ function oppnaKund(k) {
   $('f-levererad').checked = k ? !!k.levererad : false;
   $('knapp-ta-bort').hidden = !k;
   $('rader').innerHTML = '';
-  const rader = k && k.rader && k.rader.length ? k.rader : [{}];
+  const rader = k && k.rader && k.rader.length
+    ? k.rader.flatMap(r => Array.from({ length: Math.max(1, Number(r.antal) || 1) }, () => ({ ...r, antal: 1 }))) // äldre rader med antal > 1 blir flera rader
+    : [{}];
   rader.forEach(r => laggTillRad(r));
   if (k && k.rader && k.rader.length) laggTillRad({}); // tom rad sist för att lägga till
   raknaSumma();
@@ -163,12 +165,10 @@ function laggTillRad(r = {}) {
   div.className = 'rad';
   div.innerHTML = `
     <input type="text" inputmode="numeric" class="r-nr" placeholder="Nr" enterkeyhint="next">
-    <input type="number" inputmode="numeric" class="r-antal" min="1" step="1" placeholder="1" enterkeyhint="next">
     <input type="number" inputmode="decimal" class="r-pris" min="0" step="1" placeholder="kr" enterkeyhint="done">
     <button type="button" class="bort" aria-label="Ta bort rad">×</button>
     <div class="artnamn"></div>`;
   div.querySelector('.r-nr').value = r.artikelnr || '';
-  div.querySelector('.r-antal').value = r.antal || (r.artikelnr ? 1 : '');
   div.querySelector('.r-pris').value = r.pris_kr != null && r.artikelnr ? Number(r.pris_kr) : '';
   div.querySelector('.bort').addEventListener('click', () => { div.remove(); if (!$('rader').children.length) laggTillRad({}); raknaSumma(); });
   const visaNamn = () => {
@@ -182,7 +182,6 @@ function laggTillRad(r = {}) {
     // Nytt tomt radfält när sista raden fylls i
     const alla = [...$('rader').querySelectorAll('.rad')];
     if (alla[alla.length - 1] === div && div.querySelector('.r-nr').value.trim()) laggTillRad({});
-    if (!div.querySelector('.r-antal').value) div.querySelector('.r-antal').value = 1;
     const a = artikel(div.querySelector('.r-nr').value);
     if (a) div.querySelector('.r-pris').value = a.pris_kr; // pris från katalogen, går att ändra
     visaNamn();
@@ -196,7 +195,7 @@ function laggTillRad(r = {}) {
 function lasRader() {
   return [...$('rader').querySelectorAll('.rad')].map(d => ({
     artikelnr: d.querySelector('.r-nr').value.trim(),
-    antal: parseInt(d.querySelector('.r-antal').value, 10) || 1,
+    antal: 1,
     pris_kr: parseFloat(String(d.querySelector('.r-pris').value).replace(',', '.')) || 0
   })).filter(r => r.artikelnr || r.pris_kr);
 }
@@ -251,7 +250,7 @@ function stangKund() {
 // ---------- Ny nivå: vit skärm med konfetti ----------
 let konfettiTimer = null;
 function visaFest(niva) {
-  $('festniva').textContent = isNaN(niva.namn) ? niva.namn : 'Nivå ' + niva.namn;
+  $('festniva').textContent = niva.namn;
   $('vy-fest').hidden = false;
   startaKonfetti();
 }
