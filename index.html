@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="icon" href="icon-192.png">
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
 
@@ -84,8 +84,8 @@
     </div>
 
     <div class="kort">
-      <div class="radhuvud"><span>Nr</span><span>Antal</span><span>Pris</span><span></span></div>
-      <p class="dampad liten">Skriv numret ur katalogen så fylls namn och pris i automatiskt.</p>
+      <div class="radhuvud"><span>Nr</span><span>Pris</span><span></span></div>
+      <p class="dampad liten">Skriv numret ur katalogen så fylls namn och pris i automatiskt. Vill kunden ha flera av samma, lägg numret på flera rader.</p>
       <div id="rader"></div>
       <button type="button" id="knapp-rad" class="sekundar">+ Rad</button>
       <div class="summarad"><span>Summa</span><span id="f-summa">0 kr</span></div>
@@ -98,6 +98,17 @@
 
 <div id="toast" class="toast" hidden></div>
 
-<script src="app.js?v=2"></script>
+<!-- Ny nivå -->
+<section id="vy-fest" class="fest" hidden>
+  <canvas id="konfetti"></canvas>
+  <div class="festtext">
+    <div class="festikon">🏆</div>
+    <h1>Du har nått nivå <span id="festniva"></span>!</h1>
+    <p>Vad duktig du är Wille!</p>
+    <button id="knapp-fest-stang" class="primar stor">Fortsätt</button>
+  </div>
+</section>
+
+<script src="app.js?v=5"></script>
 </body>
 </html>

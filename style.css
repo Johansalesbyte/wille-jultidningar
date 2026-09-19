@@ -61,7 +61,7 @@ input[type=text], input[type=tel], input[type=number] { display: block; width: 1
 input:focus { outline: none; border-color: var(--rod); }
 .rad-check { display: flex; align-items: center; gap: 10px; font-size: 17px; color: var(--text); margin: 4px 0 0; }
 .rad-check input { width: 24px; height: 24px; margin: 0; }
-.radhuvud, .rad { display: grid; grid-template-columns: 1.1fr .8fr 1.2fr 36px; gap: 8px; align-items: center; }
+.radhuvud, .rad { display: grid; grid-template-columns: 1fr 1fr 36px; gap: 8px; align-items: center; }
 .radhuvud { font-size: 12px; color: var(--dampad); text-transform: uppercase; letter-spacing: .05em; font-weight: 600; padding: 0 2px 6px; }
 .rad { margin-bottom: 8px; }
 .rad input { margin-top: 0; padding: 10px 8px; text-align: center; }
@@ -79,3 +79,11 @@ input:focus { outline: none; border-color: var(--rod); }
 .rad .artnamn { grid-column: 1 / -1; font-size: 13px; color: var(--dampad); padding: 0 4px; margin-top: -4px; min-height: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .rad .artnamn.okand { color: var(--rod); }
 .kundlista .detalj { white-space: normal; }
+
+.fest[hidden] { display: none; }
+.fest { position: fixed; inset: 0; background: #fff; z-index: 20; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.fest canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.festtext { position: relative; text-align: center; max-width: 360px; }
+.festikon { font-size: 72px; margin-bottom: 8px; }
+.festtext h1 { font-size: 28px; line-height: 1.25; color: var(--rod); margin: 0 0 12px; }
+.festtext p { font-size: 20px; font-weight: 700; color: var(--text); margin: 0 0 28px; }
