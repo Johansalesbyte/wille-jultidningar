@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="icon" href="icon-192.png">
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 
@@ -98,6 +98,17 @@
 
 <div id="toast" class="toast" hidden></div>
 
-<script src="app.js?v=2"></script>
+<!-- Ny nivå -->
+<section id="vy-fest" class="fest" hidden>
+  <canvas id="konfetti"></canvas>
+  <div class="festtext">
+    <div class="festikon">🏆</div>
+    <h1>Du har nått nästa nivå.<br>Vad duktig du är Wille!</h1>
+    <p id="festniva"></p>
+    <button id="knapp-fest-stang" class="primar stor">Fortsätt</button>
+  </div>
+</section>
+
+<script src="app.js?v=3"></script>
 </body>
 </html>
