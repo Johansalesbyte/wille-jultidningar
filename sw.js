@@ -1,4 +1,4 @@
-const CACHE = 'jultidningar-v5';
+const CACHE = 'jultidningar-v6';
 const FILER = ['./', './index.html', './app.js', './style.css', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
