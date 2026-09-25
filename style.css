@@ -19,6 +19,7 @@ h1 { font-size: 20px; margin: 0; }
 h2 { font-size: 16px; margin: 0; color: var(--dampad); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
 .topp { display: flex; align-items: center; justify-content: space-between; padding: 8px 0 14px; gap: 8px; }
 .topp h1 { flex: 1; text-align: center; }
+a.ikon.katalog { font-size: 24px; text-decoration: none; display: inline-block; }
 .ikon { width: 40px; height: 40px; border: none; background: transparent; font-size: 28px; line-height: 40px; color: var(--rod); padding: 0; text-align: center; }
 .kort { background: var(--kort); border-radius: 16px; padding: 16px; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
 .center { text-align: center; }
