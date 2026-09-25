@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="icon" href="icon-192.png">
-  <link rel="stylesheet" href="style.css?v=6">
+  <link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
 
@@ -26,7 +26,7 @@
 <!-- Startsida -->
 <section id="vy-start" class="vy" hidden>
   <header class="topp">
-    <a class="ikon katalog" href="https://claude.ai/artifact/ChXyK3pKJ2ESuLVJWfwGa9" target="_blank" rel="noopener" aria-label="Öppna katalogen" title="Katalogen">📖</a>
+    <button id="knapp-katalog" class="ikon katalog" aria-label="Öppna katalogen" title="Katalogen">📖</button>
     <h1>Willes jultidningar</h1>
     <button id="knapp-uppdatera" class="ikon" aria-label="Uppdatera" title="Uppdatera">↻</button>
   </header>
@@ -97,6 +97,21 @@
   </form>
 </section>
 
+<!-- Katalogen -->
+<section id="vy-katalog" class="vy" hidden>
+  <header class="topp">
+    <button id="knapp-katalog-tillbaka" class="ikon" aria-label="Tillbaka">‹</button>
+    <h1>Katalogen</h1>
+    <span class="sidnr"><input id="k-sida" type="number" inputmode="numeric" min="1" max="64" aria-label="Sida"> / 64</span>
+  </header>
+  <div class="bildyta" id="k-yta">
+    <img id="k-bild" alt="Katalogsida">
+    <button class="bladdra vanster" id="k-forra" aria-label="Föregående sida">‹</button>
+    <button class="bladdra hoger" id="k-nasta" aria-label="Nästa sida">›</button>
+  </div>
+  <div class="minirad" id="k-minirad"></div>
+</section>
+
 <div id="toast" class="toast" hidden></div>
 
 <!-- Ny nivå -->
@@ -110,6 +125,6 @@
   </div>
 </section>
 
-<script src="app.js?v=6"></script>
+<script src="app.js?v=7"></script>
 </body>
 </html>

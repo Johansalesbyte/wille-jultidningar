@@ -284,6 +284,59 @@ function startaKonfetti() {
   konfettiTimer = requestAnimationFrame(rita);
 }
 
+// ---------- Katalogen ----------
+const KATALOG_SIDOR = 64;
+let kSida = 1;
+function oppnaKatalog() {
+  if (!$('k-minirad').children.length) {
+    for (let i = 1; i <= KATALOG_SIDOR; i++) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.innerHTML = `<img loading="lazy" alt=""><span>${i}</span>`;
+      b.querySelector('img').src = `katalog/thumb/p${String(i).padStart(2, '0')}.jpg`;
+      b.addEventListener('click', () => visaSida(i));
+      $('k-minirad').appendChild(b);
+    }
+  }
+  history.pushState({ vy: 'katalog' }, '');
+  visa('vy-katalog');
+  visaSida(kSida);
+}
+function visaSida(n) {
+  kSida = Math.max(1, Math.min(KATALOG_SIDOR, n));
+  const fil = i => `katalog/full/p${String(i).padStart(2, '0')}.jpg`;
+  $('k-bild').src = fil(kSida);
+  $('k-sida').value = kSida;
+  const knappar = $('k-minirad').children;
+  for (let i = 0; i < knappar.length; i++) knappar[i].classList.toggle('aktiv', i + 1 === kSida);
+  const aktiv = knappar[kSida - 1];
+  if (aktiv) aktiv.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+  // Förladda grannsidorna
+  if (kSida < KATALOG_SIDOR) new Image().src = fil(kSida + 1);
+  if (kSida > 1) new Image().src = fil(kSida - 1);
+}
+function initKatalog() {
+  $('knapp-katalog').addEventListener('click', oppnaKatalog);
+  $('knapp-katalog-tillbaka').addEventListener('click', () => history.back());
+  $('k-forra').addEventListener('click', () => visaSida(kSida - 1));
+  $('k-nasta').addEventListener('click', () => visaSida(kSida + 1));
+  $('k-sida').addEventListener('change', () => visaSida(parseInt($('k-sida').value, 10) || 1));
+  $('k-sida').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('k-sida').blur(); } });
+  let startX = null, startY = null;
+  $('k-yta').addEventListener('touchstart', e => { startX = e.touches[0].clientX; startY = e.touches[0].clientY; }, { passive: true });
+  $('k-yta').addEventListener('touchend', e => {
+    if (startX == null) return;
+    const dx = e.changedTouches[0].clientX - startX, dy = e.changedTouches[0].clientY - startY;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) visaSida(kSida + (dx < 0 ? 1 : -1));
+    startX = startY = null;
+  }, { passive: true });
+  document.addEventListener('keydown', e => {
+    if ($('vy-katalog').hidden || e.target === $('k-sida')) return;
+    if (e.key === 'ArrowRight') visaSida(kSida + 1);
+    if (e.key === 'ArrowLeft') visaSida(kSida - 1);
+  });
+}
+
 // ---------- Start ----------
 function init() {
   nyckel = lasNyckel();
@@ -305,7 +358,8 @@ function init() {
     for (const x of document.querySelectorAll('.sortknapp')) x.classList.toggle('aktiv', x === b);
     ritaKundlista();
   });
-  window.addEventListener('popstate', () => visa((history.state && history.state.vy) === 'kund' ? 'vy-kund' : 'vy-start'));
+  window.addEventListener('popstate', () => { const v = history.state && history.state.vy; visa(v === 'kund' ? 'vy-kund' : v === 'katalog' ? 'vy-katalog' : 'vy-start'); });
+  initKatalog();
   document.addEventListener('visibilitychange', () => { if (!document.hidden && !$('vy-start').hidden) hamta(); });
 
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
