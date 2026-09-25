@@ -17,6 +17,7 @@ jobs:
         run: |
           mkdir dist
           cp index.html app.js style.css sw.js manifest.webmanifest .nojekyll *.png dist/
+          cp -r katalog dist/
       - name: Publicera till gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:

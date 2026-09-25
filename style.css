@@ -19,7 +19,7 @@ h1 { font-size: 20px; margin: 0; }
 h2 { font-size: 16px; margin: 0; color: var(--dampad); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
 .topp { display: flex; align-items: center; justify-content: space-between; padding: 8px 0 14px; gap: 8px; }
 .topp h1 { flex: 1; text-align: center; }
-a.ikon.katalog { font-size: 24px; text-decoration: none; display: inline-block; }
+.ikon.katalog { font-size: 24px; }
 .ikon { width: 40px; height: 40px; border: none; background: transparent; font-size: 28px; line-height: 40px; color: var(--rod); padding: 0; text-align: center; }
 .kort { background: var(--kort); border-radius: 16px; padding: 16px; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
 .center { text-align: center; }
@@ -88,3 +88,19 @@ input:focus { outline: none; border-color: var(--rod); }
 .festikon { font-size: 72px; margin-bottom: 8px; }
 .festtext h1 { font-size: 28px; line-height: 1.25; color: var(--rod); margin: 0 0 12px; }
 .festtext p { font-size: 20px; font-weight: 700; color: var(--text); margin: 0 0 28px; }
+
+/* Katalogen */
+.sidnr { font-size: 15px; color: var(--dampad); white-space: nowrap; display: flex; align-items: center; gap: 4px; }
+.sidnr input { width: 52px; font: inherit; font-size: 16px; text-align: center; padding: 6px 4px; border: 1.5px solid var(--kant); border-radius: 10px; background: #fff; color: var(--text); }
+.bildyta { position: relative; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.06); aspect-ratio: 3 / 4; display: flex; align-items: center; justify-content: center; touch-action: pan-y; }
+.bildyta img { max-width: 100%; max-height: 100%; display: block; user-select: none; -webkit-user-drag: none; }
+.bladdra { position: absolute; top: 0; bottom: 0; width: 34%; border: none; background: transparent; color: transparent; font-size: 44px; }
+.bladdra.vanster { left: 0; text-align: left; padding-left: 8px; }
+.bladdra.hoger { right: 0; text-align: right; padding-right: 8px; }
+.bladdra:active { color: rgba(0,0,0,.35); }
+.minirad { display: flex; gap: 8px; overflow-x: auto; padding: 12px 2px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.minirad::-webkit-scrollbar { display: none; }
+.minirad button { flex: none; width: 56px; padding: 0; border: 2px solid transparent; border-radius: 8px; background: #fff; overflow: hidden; position: relative; }
+.minirad button.aktiv { border-color: var(--rod); }
+.minirad img { width: 100%; height: 74px; object-fit: cover; display: block; }
+.minirad span { position: absolute; left: 3px; bottom: 3px; font-size: 11px; font-weight: 700; background: rgba(255,255,255,.85); border-radius: 6px; padding: 1px 5px; }
