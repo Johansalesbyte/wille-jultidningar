@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Willes jultidningar – katalogen</title>
+  <meta name="description" content="Bläddra i jultidningskatalogen 2026 och säg till Wille vilket nummer du vill ha.">
+  <meta property="og:title" content="Willes jultidningar – katalogen">
+  <meta property="og:description" content="Bläddra i katalogen och säg till Wille vilket nummer du vill ha.">
+  <meta property="og:image" content="https://johansalesbyte.github.io/wille-jultidningar/katalog/thumb/p01.jpg">
+  <meta name="theme-color" content="#b3261e">
+  <link rel="icon" href="icon-192.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css?v=7">
+</head>
+<body>
+<section id="vy-katalog" class="vy">
+  <header class="topp">
+    <span class="ikon" aria-hidden="true">📖</span>
+    <h1>Katalogen</h1>
+    <span class="sidnr"><input id="k-sida" type="number" inputmode="numeric" min="1" max="64" aria-label="Sida"> / 64</span>
+  </header>
+  <div class="bildyta" id="k-yta">
+    <img id="k-bild" alt="Katalogsida">
+    <button class="bladdra vanster" id="k-forra" aria-label="Föregående sida">‹</button>
+    <button class="bladdra hoger" id="k-nasta" aria-label="Nästa sida">›</button>
+  </div>
+  <div class="minirad" id="k-minirad"></div>
+  <p class="hjalp" style="text-align:center;margin-top:18px">Hittat något? Säg numret på varan till Wille så fixar han resten. 🎅</p>
+</section>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const SIDOR = 64;
+  const fil = (mapp, i) => `katalog/${mapp}/p${String(i).padStart(2, '0')}.jpg`;
+  let sida = Math.max(1, Math.min(SIDOR, parseInt((location.hash.match(/sida=(\d+)/) || [])[1], 10) || 1));
+
+  for (let i = 1; i <= SIDOR; i++) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.innerHTML = `<img loading="lazy" alt=""><span>${i}</span>`;
+    b.querySelector('img').src = fil('thumb', i);
+    b.addEventListener('click', () => visaSida(i));
+    $('k-minirad').appendChild(b);
+  }
+
+  function visaSida(n) {
+    sida = Math.max(1, Math.min(SIDOR, n));
+    $('k-bild').src = fil('full', sida);
+    $('k-sida').value = sida;
+    history.replaceState(null, '', '#sida=' + sida);
+    const knappar = $('k-minirad').children;
+    for (let i = 0; i < knappar.length; i++) knappar[i].classList.toggle('aktiv', i + 1 === sida);
+    const aktiv = knappar[sida - 1];
+    if (aktiv) aktiv.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+    if (sida < SIDOR) new Image().src = fil('full', sida + 1);
+    if (sida > 1) new Image().src = fil('full', sida - 1);
+  }
+
+  $('k-forra').addEventListener('click', () => visaSida(sida - 1));
+  $('k-nasta').addEventListener('click', () => visaSida(sida + 1));
+  $('k-sida').addEventListener('change', () => visaSida(parseInt($('k-sida').value, 10) || 1));
+  $('k-sida').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('k-sida').blur(); } });
+  let startX = null, startY = null;
+  $('k-yta').addEventListener('touchstart', e => { startX = e.touches[0].clientX; startY = e.touches[0].clientY; }, { passive: true });
+  $('k-yta').addEventListener('touchend', e => {
+    if (startX == null) return;
+    const dx = e.changedTouches[0].clientX - startX, dy = e.changedTouches[0].clientY - startY;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) visaSida(sida + (dx < 0 ? 1 : -1));
+    startX = startY = null;
+  }, { passive: true });
+  document.addEventListener('keydown', e => {
+    if (e.target === $('k-sida')) return;
+    if (e.key === 'ArrowRight') visaSida(sida + 1);
+    if (e.key === 'ArrowLeft') visaSida(sida - 1);
+  });
+  visaSida(sida);
+})();
+</script>
+</body>
+</html>
